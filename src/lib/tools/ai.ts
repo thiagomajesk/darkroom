@@ -5,7 +5,10 @@ import { arch, platform } from "node:os";
 import { Codex } from "@openai/codex-sdk";
 import sharp from "sharp";
 
-import type { GridParams, ImageClassification, SpritesheetBox } from "@/lib/types";
+import type { ImageClassification, SpritesheetBox } from "@/lib/types";
+import { extractJson } from "@/lib/tools/parse";
+
+export { extractJson, parseGridResult } from "@/lib/tools/parse";
 
 function findCodexBinary(): string | undefined {
   const os = platform();
@@ -41,27 +44,12 @@ function getCodexThread() {
   });
 }
 
-export function extractJson(text: string): string {
-  const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/);
-  if (fenced) return fenced[1].trim();
-
-  const jsonObj = text.match(/\{[\s\S]*\}/);
-  if (jsonObj) return jsonObj[0];
-
-  return text;
-}
-
 function clampBox(box: SpritesheetBox, width: number, height: number): SpritesheetBox {
   const x = Math.max(0, Math.min(Math.round(box.x), width - 1));
   const y = Math.max(0, Math.min(Math.round(box.y), height - 1));
   const clampedWidth = Math.max(1, Math.min(Math.round(box.width), width - x));
   const clampedHeight = Math.max(1, Math.min(Math.round(box.height), height - y));
   return { ...box, x, y, width: clampedWidth, height: clampedHeight };
-}
-
-export function parseGridResult(finalResponse: string): GridParams {
-  const json = extractJson(finalResponse);
-  return JSON.parse(json) as GridParams;
 }
 
 export function getSpritesheetPrompt(width: number, height: number): string {

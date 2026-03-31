@@ -23,7 +23,7 @@ function toRecord(row: typeof images.$inferSelect): ImageRecord {
   };
 }
 
-function normalizeExtension(name: string, mimeType: string) {
+export function normalizeExtension(name: string, mimeType: string) {
   const cleanName = name.split("?")[0].split("#")[0];
   const extension = extname(cleanName).replace(".", "").toLowerCase();
 
