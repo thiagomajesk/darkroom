@@ -13,3 +13,4 @@ export { pixelate } from "./tools/synthesize/pixelate";
 export { svgTrace } from "./tools/synthesize/svg-trace";
 export { upscale } from "./tools/synthesize/upscale";
 export { extractSpritesCli } from "./tools/spritesheet/extract";
+export { detectSprites } from "./tools/spritesheet/detect";
